@@ -2228,8 +2228,10 @@ function get_kdeneon() {
     local HASH=""
     local ISO=""
     local URL="https://files.kde.org/neon/images/${EDITION}/${RELEASE}/current"
-    ISO=$(web_pipe "${URL}/neon-${RELEASE}-${EDITION}-current.sha256sum" | cut -d' ' -f3-)
-    HASH=$(web_pipe "${URL}/neon-${RELEASE}-${EDITION}-current.sha256sum" | cut -d' ' -f1)
+
+    local CHKSUM_FILE_CONTENT=$(web_pipe "${URL}/neon-${RELEASE}-${EDITION}-current.sha256sum")
+    IFS=' ' read -r HASH ISO <<< "$CHKSUM_FILE_CONTENT"
+
     echo "${URL}/${ISO} ${HASH}"
 }
 
